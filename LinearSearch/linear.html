@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Linear Search Visualizer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #4a00e0;
+      --secondary-color: #8e2de2;
+      --accent-color: #6a11cb;
+      --dark-bg: #0a0a0a;
+      --light-text: #f8f9fa;
+      --card-bg: #1a1a1a;
+    }
+    
+    body {
+      font-family: 'Baloo Tamma 2', cursive;
+      font-weight: 500;
+      background-color: var(--dark-bg);
+      color: var(--light-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    .header-section {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    h1 {
+      color: var(--secondary-color);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .stat-box {
+      background: rgba(106, 17, 203, 0.2);
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      border-left: 3px solid var(--secondary-color);
+      min-width: 200px;
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-top: 0.3rem;
+    }
+    
+    #array-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 300px;
+      margin: 0 auto;
+      padding: 1rem;
+      background-color: rgba(30, 30, 48, 0.5);
+      border-radius: 10px;
+      position: relative;
+      overflow-x: auto;
+    }
+    
+    .block {
+      flex: 0 0 auto;
+      width: 28px;
+      background-color: var(--secondary-color);
+      position: relative;
+      transition: all 0.3s ease;
+      margin: 0 2px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .block-id {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--light-text);
+    }
+    
+    .search-container {
+      text-align: center;
+      margin: 1rem auto;
+      max-width: 800px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .controls-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .search-input {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 200px;
+    }
+    
+    .speed-control label {
+      white-space: nowrap;
+    }
+    
+    input[type="text"] {
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border-radius: 50px;
+      border: none;
+      background-color: var(--card-bg);
+      color: var(--light-text);
+      width: 150px;
+      text-align: center;
+    }
+    
+    input[type="range"] {
+      width: 150px;
+      -webkit-appearance: none;
+      height: 8px;
+      background: var(--card-bg);
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+      cursor: pointer;
+    }
+    
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 150px;
+    }
+    
+    #search-btn {
+      background: linear-gradient(135deg, #00c853, #64dd17);
+      color: white;
+      box-shadow: 0 4px 15px rgba(100, 221, 23, 0.3);
+    }
+    
+    #reset-btn {
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 105, 97, 0.3);
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    
+    #result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      min-height: 30px;
+    }
+    
+    .active-step {
+      color: #FF4949 !important;
+      font-weight: bold !important;
+    }
+    
+    /* Layout for visualization and steps */
+    .visualization-section {
+      display: flex;
+      max-width: 1200px;
+      margin: 2rem auto;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .visualization-container {
+      flex: 2;
+      min-width: 300px;
+    }
+    
+    .steps-container {
+      flex: 1;
+      min-width: 300px;
+      background-color: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .steps-container h3 {
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .stats-container {
+        flex-direction: column;
+      }
+    
+      .search-container {
+        flex-direction: column;
+      }
+    
+      #array-container {
+        height: 200px;
+      }
+    
+      .block {
+        width: 20px;
+        margin: 0 1px;
+      }
+      
+      .visualization-section {
+        flex-direction: column;
+      }
+      
+      .controls-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-section">
+    <div class="container">
+      <h1>Linear Search Visualizer</h1>
+      <p>Linear Search is a simple searching algorithm that checks each element in the list sequentially until the target element is found or the list ends.</p>
+      <div class="stats-container">
+        <div class="stat-box">
+          <div><i class="fas fa-clock"></i> Time Complexity</div>
+          <div class="stat-value">O(n)</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-memory"></i> Space Complexity</div>
+          <div class="stat-value">O(1)</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-exchange-alt"></i> Comparisons</div>
+          <div id="comparison-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-stopwatch"></i> Time Elapsed</div>
+          <div id="time-elapsed" class="stat-value">0.00s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="visualization-section">
+    <div class="visualization-container">
+      <div id="array-container"></div>
+      
+      <div class="controls-container">
+        <div class="search-input">
+          <label for="search-value">Search for:</label>
+          <input type="text" id="search-value" placeholder="Enter a number"/>
+        </div>
+        
+        <div class="speed-control">
+          <label for="speed-slider"><i class="fas fa-tachometer-alt"></i> Speed:</label>
+          <input type="range" id="speed-slider" min="50" max="1000" value="300">
+        </div>
+      </div>
+      
+      <div class="search-container">
+        <button id="search-btn" onclick="startLinearSearch()">
+          <i class="fas fa-search"></i> Search
+        </button>
+        <button id="reset-btn" onclick="resetVisualization()">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+      </div>
+
+      <div id="result" class="text-center"></div>
+    </div>
+    
+    <div class="steps-container">
+      <h3>Algorithm Steps</h3>
+      <ol>
+        <li id="step1">Start from the first element of the array</li>
+        <li id="step2">Compare the current element with the target value</li>
+        <li id="step3">If they match, return the current index</li>
+        <li id="step4">If they don't match, move to the next element</li>
+        <li id="step5">Repeat steps 2-4 until element is found or array ends</li>
+        <li id="step6">If element not found, return -1 or "not found"</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const arrayContainer = document.getElementById("array-container");
+    const searchBtn = document.getElementById("search-btn");
+    const resetBtn = document.getElementById("reset-btn");
+    const searchValue = document.getElementById("search-value");
+    const resultDiv = document.getElementById("result");
+    const comparisonCountEl = document.getElementById("comparison-count");
+    const timeElapsedEl = document.getElementById("time-elapsed");
+    const algorithmSteps = document.querySelectorAll('.steps-container li');
+    const speedSlider = document.getElementById("speed-slider");
+
+    let blocks = []; //stores the bars
+    let arrayLength = 20;
+    let delay = 300; //delay between steps in milliseconds
+    let isSearching = false; // flag to prevent multiple searches at once
+    let comparisonCount = 0;
+    let startTime = 0;
+
+    // Initialize the visualization
+    function generateArray() {
+      arrayContainer.innerHTML = "";
+      blocks = [];
+ 
+      let arr = [];
+      for (let i = 0; i < arrayLength; i++) {
+        arr.push(Math.ceil(Math.random() * 100));
+      }
+      //calculate block width
+      const maxWidth = arrayContainer.clientWidth;
+      const blockWidth = Math.min(28, (maxWidth - 40) / arrayLength - 2);
+      const blockSpacing = 2;
+
+      for (let i = 0; i < arrayLength; i++) {
+        const block = document.createElement("div");
+        block.className = "block";
+        block.style.height = `${arr[i] * 2.5}px`;
+        block.style.width = `${blockWidth}px`;
+        block.style.margin = `0 ${blockSpacing}px`;
+
+        const blockId = document.createElement("span");
+        blockId.className = "block-id";
+        blockId.innerText = arr[i];
+        block.appendChild(blockId);
+
+        arrayContainer.appendChild(block);
+        blocks.push(block);
+      }
+      
+      // Reset stats
+      comparisonCount = 0;
+      comparisonCountEl.textContent = "0";
+      timeElapsedEl.textContent = "0.00s";
+      resultDiv.textContent = "";
+      searchBtn.disabled = false;
+    }
+
+    // Update speed when slider changes
+    speedSlider.addEventListener('input', function() {
+      delay = 1050 - this.value; // Invert the value (so higher = faster)
+    });
+
+    function resetStepHighlights() {
+      algorithmSteps.forEach(step => {
+        step.classList.remove("active-step");
+      });
+    }
+
+    function highlightStep(stepNumber) {
+      resetStepHighlights();
+      const step = document.getElementById(`step${stepNumber}`);
+      if (step) step.classList.add("active-step");
+    }
+
+    async function startLinearSearch() {
+      if (isSearching) return;
+      
+      resetStepHighlights();
+      highlightStep(1);
+      await sleep(delay/2);
+      
+      comparisonCount = 0;
+      comparisonCountEl.textContent = "0";
+      resultDiv.textContent = "";
+      startTime = performance.now();
+
+      const num = parseInt(searchValue.value);
+      if (isNaN(num)) {
+        resultDiv.textContent = "Please enter a valid number";
+        return;
+      }
+
+      isSearching = true;
+      searchBtn.disabled = true;
+      resetBtn.disabled = true;
+
+      for (let block of blocks) {
+        block.style.backgroundColor = "var(--secondary-color)";
+      }
+
+      let found = false;
+
+      highlightStep(2);
+      await sleep(delay/2);
+
+      //Searching process
+      for (let i = 0; i < blocks.length; i++) {
+        comparisonCount++;
+        comparisonCountEl.textContent = comparisonCount;
+
+        const currentValue = parseInt(blocks[i].querySelector(".block-id").innerText);
+
+        highlightStep(2);
+        blocks[i].style.backgroundColor = "#FF4949";
+        await sleep(delay);
+
+        if (currentValue === num) {
+          highlightStep(3);
+          blocks[i].style.backgroundColor = "#13CE66";
+          resultDiv.textContent = `Element found at position ${i + 1}`;
+          found = true;
+          break;
+        } else {
+          highlightStep(4);
+          blocks[i].style.backgroundColor = "#6b5b95";
+          await sleep(delay);
+        }
+      }
+
+      if (!found) {
+        highlightStep(6);
+        resultDiv.textContent = "Element not found";
+      }
+      //calculate elapsed time
+      const elapsed = (performance.now() - startTime) / 1000;
+      timeElapsedEl.textContent = elapsed.toFixed(4) + "s";
+
+      isSearching = false;
+      searchBtn.disabled = false;
+      resetBtn.disabled = false;
+    }
+
+    function resetVisualization() {
+      if (isSearching) return;
+      
+      // Reset all blocks to original color
+      for (let block of blocks) {
+        block.style.backgroundColor = "var(--secondary-color)";
+      }
+      
+      // Reset stats and result
+      comparisonCount = 0;
+      comparisonCountEl.textContent = "0";
+      timeElapsedEl.textContent = "0.00s";
+      resultDiv.textContent = "";
+      
+      // Reset step highlights
+      resetStepHighlights();
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Initialize on load
+    window.addEventListener('load', generateArray);
+    window.addEventListener('resize', generateArray);
+  </script>
+</body>
+</html>

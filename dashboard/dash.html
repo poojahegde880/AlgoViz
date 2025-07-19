@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dash.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar (unchanged) -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>Admin</span>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="user.html"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Login Time</a></li>
+                    <li><a href="ratings.html"><i class="fas fa-star"></i> Ratings</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Top Bar (unchanged) -->
+            <div class="top-bar">
+                <div class="search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search users...">
+                </div>
+                <button class="logout-btn" onclick="window.location.href='adminlog.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="content">
+                <h1>Dashboard Overview</h1>
+                
+                <!-- Stats Cards -->
+                <div class="stats">
+                    <div class="card">
+                        <div class="icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="info">
+                            <h3>Total Users</h3>
+                            <p class="count" id="user-count">--</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info">
+                            <h3>Avg. Time</h3>
+                            <p class="count">1.2 hrs</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon rating">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="info">
+                            <h3>Avg. Rating</h3>
+                            <p class="count">4.2/5</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Algorithm Views Pie Chart -->
+                <div class="chart-container">
+                    <h2>Algorithm Views Distribution</h2>
+                    <canvas id="algorithmChart"></canvas>
+                </div>
+
+                <!-- User Table -->
+                <div class="table-container">
+                    <h2>Registered Users</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Last Login</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body">
+                            <tr><td colspan="4">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dash.js"></script>
+</body>
+</html>

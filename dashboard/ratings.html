@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Ratings Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a00e0;
+            --secondary-color: #8e2de2;
+            --accent-color: #6a11cb;
+            --dark-bg: #121212;
+            --light-text: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --table-header: #2a2a2a;
+            --table-row: #252525;
+            --table-hover: #333;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #aaa;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .ratings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ratings-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.3);
+        }
+
+        .search-bar button {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-bar button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .ratings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .ratings-table th {
+            background-color: var(--table-header);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .ratings-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            background-color: var(--table-row);
+        }
+
+        .ratings-table tr:hover td {
+            background-color: var(--table-hover);
+        }
+
+        .star-rating {
+            color: gold;
+            margin-right: 0.3rem;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .delete-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            background-color: #2a2a2a;
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+
+        .page-btn:hover:not(.active) {
+            background-color: #333;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #aaa;
+            display: none;
+        }
+
+        .algorithm-badge {
+            display: inline-block;
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            background-color: rgba(106, 17, 203, 0.2);
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .star-rating-display {
+            color: gold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .star-rating-display .empty-star {
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+                padding-top: 1.5rem;
+            }
+
+            .ratings-container {
+                padding: 1rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar button {
+                justify-content: center;
+                padding: 0.8rem;
+            }
+
+            .ratings-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<!-- Keep the same DOCTYPE, HTML, HEAD and STYLE sections -->
+
+<!-- ... unchanged <head> section ... -->
+
+    <body>
+        <div class="header">
+            <div class="close-btn" onclick="window.close()">
+                <i class="fas fa-times"></i>
+            </div>
+            <h1>Algorithm Ratings</h1>
+            <p>View and manage all user ratings for different algorithms</p>
+        </div>
+    
+        <div class="ratings-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by user ID, name, or algorithm...">
+                <button id="searchBtn"><i class="fas fa-search"></i> Search</button>
+            </div>
+    
+            <table class="ratings-table" id="ratingsTable">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>Algorithm</th>
+                        <th>Rating</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ratingsTableBody">
+                    <!-- Ratings will be dynamically inserted here -->
+                </tbody>
+            </table>
+    
+            <div class="no-results" id="noResults">
+                <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <h3>No ratings found</h3>
+                <p>Try adjusting your search query</p>
+            </div>
+    
+            <div class="pagination" id="pagination">
+                <button class="page-btn" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    
+        <script>
+            const tableBody = document.getElementById("ratingsTableBody");
+            const pagination = document.getElementById("pagination");
+            const searchInput = document.getElementById("searchInput");
+    
+            let allRatings = [];
+            let filteredRatings = [];
+            let currentPage = 1;
+            const itemsPerPage = 5;
+    
+            async function fetchRatings() {
+                try {
+                    const res = await fetch('http://localhost:5500/api/ratings');
+                    const data = await res.json();
+                    console.log(data); // Debug: Check data structure
+                    allRatings = data;
+                    filteredRatings = [...allRatings];
+                    renderRatings();
+                    updatePagination();
+                } catch (err) {
+                    console.error('Error fetching ratings:', err);
+                }
+            }
+    
+            function generateStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star empty-star"></i>';
+                }
+                return stars;
+            }
+    
+            async function deleteRating(ratingId) {
+                try {
+                    const response = await fetch(`http://localhost:5500/api/ratings/${ratingId}`, {
+                        method: 'DELETE'
+                    });
+    
+                    if (response.ok) {
+                        allRatings = allRatings.filter(rating => rating.id !== ratingId);
+                        filteredRatings = filteredRatings.filter(rating => rating.id !== ratingId);
+                        renderRatings();
+                        updatePagination();
+                        alert('Rating deleted successfully!');
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to delete rating');
+                    }
+                } catch (err) {
+                    console.error('Error deleting rating:', err);
+                    alert('Error deleting rating. Please try again.');
+                }
+            }
+    
+            function renderRatings() {
+                tableBody.innerHTML = "";
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const pageRatings = filteredRatings.slice(start, end);
+    
+                pageRatings.forEach((rating) => {
+                    const row = document.createElement("tr");
+                    const createdAt = new Date(rating.created_at);
+                    const formattedDate = createdAt instanceof Date && !isNaN(createdAt) ? createdAt.toLocaleString() : 'N/A';
+    
+                    row.innerHTML = `
+                        <td>${rating.user_id}</td>
+                        <td>${rating.name}</td>
+                        <td>${rating.algorithm}</td>
+                        <td>
+                            <span class="star-rating-display">
+                                ${generateStars(rating.rating)}
+                            </span>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="delete-btn" data-id="${rating.id}">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+    
+                const deleteBtns = document.querySelectorAll('.delete-btn');
+                deleteBtns.forEach(btn => {
+                    btn.addEventListener('click', (event) => {
+                        const targetBtn = event.currentTarget;
+                        const ratingId = targetBtn.getAttribute('data-id');
+                        if (ratingId) {
+                            deleteRating(ratingId);
+                        } else {
+                            console.error('Rating ID is missing');
+                        }
+                    });
+                });
+    
+                document.getElementById("noResults").style.display = filteredRatings.length === 0 ? 'block' : 'none';
+            }
+    
+            function updatePagination() {
+                const pageCount = Math.ceil(filteredRatings.length / itemsPerPage);
+                const pageBtns = document.querySelectorAll('.page-btn');
+    
+                pageBtns.forEach((btn, index) => {
+                    if (index > 0 && index < pageCount + 1) {
+                        btn.style.display = 'inline-block';
+                        btn.textContent = index;
+                        btn.classList.toggle('active', currentPage === index);
+                        btn.onclick = () => {
+                            currentPage = index;
+                            renderRatings();
+                            updatePagination();
+                        };
+                    } else if (btn.id !== 'prevPage' && btn.id !== 'nextPage') {
+                        btn.style.display = 'none';
+                    }
+                });
+            }
+    
+            document.getElementById("prevPage").addEventListener("click", () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderRatings();
+                    updatePagination();
+                }
+            });
+    
+            document.getElementById("nextPage").addEventListener("click", () => {
+                const pageCount = Math.ceil(filteredRatings.length / itemsPerPage);
+                if (currentPage < pageCount) {
+                    currentPage++;
+                    renderRatings();
+                    updatePagination();
+                }
+            });
+    
+            searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    filteredRatings = allRatings.filter(rating => {
+        return String(rating.name).toLowerCase().includes(query) ||
+            String(rating.user_id).toLowerCase().includes(query) ||
+            String(rating.algorithm).toLowerCase().includes(query);
+    });
+    currentPage = 1;
+    renderRatings();
+    updatePagination();
+});
+
+    
+            fetchRatings();
+        </script>
+    </body>
+    </html>
+    

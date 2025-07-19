@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sum of Subsets Visualizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="sumofsubset.css">
+</head>
+<body>
+    <div class="header">
+        <div class="close-btn" onclick="window.close()">
+            <i class="fas fa-times"></i>
+        </div>
+        <h1>Sum of Subsets</h1>
+        <p>Find all subsets of a given set that sum to a target value using backtracking</p>
+        
+        <div class="complexity-container">
+            <div class="complexity-box">
+                <div><i class="fas fa-clock"></i> Time Complexity</div>
+                <div class="complexity-value">O(2<sup>n</sup>)</div>
+                <small>Exponential (worst case)</small>
+            </div>
+            <div class="complexity-box">
+                <div><i class="fas fa-memory"></i> Space Complexity</div>
+                <div class="complexity-value">O(n)</div>
+                <small>Linear (recursion depth)</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="input-card">
+                    <h2><i class="fas fa-list-ol"></i> Input Parameters</h2>
+                    <div class="mb-3">
+                        <label for="set" class="form-label">Enter Set Elements (comma separated)</label>
+                        <input type="text" class="form-control" id="set" placeholder="e.g. 1, 2, 3, 4, 5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sum" class="form-label">Target Sum</label>
+                        <input type="number" class="form-control" id="sum" placeholder="e.g. 10">
+                    </div>
+                    <button onclick="input()" class="btn btn-primary w-100">
+                        <i class="fas fa-calculator"></i> Find Subsets
+                    </button>
+                </div>
+                
+                <div class="result-box">
+                    <h2><i class="fas fa-check-circle"></i> Solution</h2>
+                    <div id="result"></div>
+                    <button onclick="resetValues()" class="btn btn-primary mt-3">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sumofsubset.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

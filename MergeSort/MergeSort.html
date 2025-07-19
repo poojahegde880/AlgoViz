@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merge Sort Visualizer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #4a00e0;
+      --secondary-color: #8e2de2;
+      --accent-color: #6a11cb;
+      --dark-bg: #0a0a0a;
+      --light-text: #f8f9fa;
+      --card-bg: #1a1a1a;
+    }
+    
+    body {
+      font-family: 'Baloo Tamma 2', cursive;
+      font-weight: 500;
+      background-color: var(--dark-bg);
+      color: var(--light-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    .header-section {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    h1 {
+      color: var(--secondary-color);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .stat-box {
+      background: rgba(106, 17, 203, 0.2);
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      border-left: 3px solid var(--secondary-color);
+      min-width: 200px;
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-top: 0.3rem;
+    }
+    
+    #array-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 300px;
+      margin: 0 auto;
+      padding: 1rem;
+      background-color: rgba(30, 30, 48, 0.5);
+      border-radius: 10px;
+      position: relative;
+      overflow-x: auto;
+    }
+    
+    .block {
+      flex: 0 0 auto;
+      width: 28px;
+      background-color: var(--secondary-color);
+      position: relative;
+      transition: all 0.3s ease;
+      margin: 0 2px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .block-id {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--light-text);
+    }
+    
+    .search-container {
+      text-align: center;
+      margin: 1rem auto;
+      max-width: 800px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .controls-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 200px;
+    }
+    
+    .speed-control label {
+      white-space: nowrap;
+    }
+    
+    input[type="range"] {
+      width: 150px;
+      -webkit-appearance: none;
+      height: 8px;
+      background: var(--card-bg);
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+      cursor: pointer;
+    }
+    
+    button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 150px;
+    }
+    
+    #sort-btn {
+      background: linear-gradient(135deg, #00c853, #64dd17);
+      color: white;
+      box-shadow: 0 4px 15px rgba(100, 221, 23, 0.3);
+    }
+    
+    #reset-btn {
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 105, 97, 0.3);
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    
+    #result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      min-height: 30px;
+    }
+    
+    .active-step {
+      color: #FF4949 !important;
+      font-weight: bold !important;
+    }
+    
+    /* Layout for visualization and steps */
+    .visualization-section {
+      display: flex;
+      max-width: 1200px;
+      margin: 2rem auto;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .visualization-container {
+      flex: 2;
+      min-width: 300px;
+    }
+    
+    .steps-container {
+      flex: 1;
+      min-width: 300px;
+      background-color: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .steps-container h3 {
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    /* Merge Sort specific styles */
+    .left-array {
+      background-color: #6b5b95 !important;
+    }
+    
+    .right-array {
+      background-color: #FF4949 !important;
+    }
+    
+    .sorted {
+      background-color: #13CE66 !important;
+    }
+    
+    .comparing {
+      background-color: #FFD700 !important;
+    }
+    
+    .merging {
+      background-color: #FFA500 !important;
+    }
+    
+    .pointer {
+      position: absolute;
+      top: -15px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    @media (max-width: 768px) {
+      .stats-container {
+        flex-direction: column;
+      }
+    
+      .search-container {
+        flex-direction: column;
+      }
+    
+      #array-container {
+        height: 200px;
+      }
+    
+      .block {
+        width: 20px;
+        margin: 0 1px;
+      }
+      
+      .visualization-section {
+        flex-direction: column;
+      }
+      
+      .controls-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-section">
+    <div class="container">
+      <h1>Merge Sort Visualizer</h1>
+      <p>Merge Sort is a divide-and-conquer algorithm that divides the input array into two halves, recursively sorts each half, and then merges the two sorted halves.</p>
+      <div class="stats-container">
+        <div class="stat-box">
+          <div><i class="fas fa-clock"></i> Time Complexity</div>
+          <div class="stat-value">O(n log n)</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-memory"></i> Space Complexity</div>
+          <div class="stat-value">O(n)</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-exchange-alt"></i> Comparisons</div>
+          <div id="comparison-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-sync-alt"></i> Merges</div>
+          <div id="merge-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+          <div><i class="fas fa-stopwatch"></i> Time Elapsed</div>
+          <div id="time-elapsed" class="stat-value">0.00s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="visualization-section">
+    <div class="visualization-container">
+      <div id="array-container"></div>
+      
+      <div class="controls-container">
+        <div class="speed-control">
+          <label for="speed-slider"><i class="fas fa-tachometer-alt"></i> Speed:</label>
+          <input type="range" id="speed-slider" min="50" max="1000" value="300">
+        </div>
+      </div>
+      
+      <div class="search-container">
+        <button id="sort-btn" onclick="startMergeSort()">
+          <i class="fas fa-play"></i> Start Sorting
+        </button>
+        <button id="reset-btn" onclick="resetVisualization()">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+      </div>
+
+      <div id="result" class="text-center"></div>
+    </div>
+    
+    <div class="steps-container">
+      <h3>Algorithm Steps</h3>
+      <ol>
+        <li id="step1">Divide the unsorted array into two halves</li>
+        <li id="step2">Recursively sort each half</li>
+        <li id="step3">Merge the two sorted halves</li>
+        <li id="step4">Compare elements from each half</li>
+        <li id="step5">Place the smaller element in the merged array</li>
+        <li id="step6">Copy remaining elements from either half</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const arrayContainer = document.getElementById("array-container");
+    const sortBtn = document.getElementById("sort-btn");
+    const resetBtn = document.getElementById("reset-btn");
+    const resultDiv = document.getElementById("result");
+    const comparisonCountEl = document.getElementById("comparison-count");
+    const mergeCountEl = document.getElementById("merge-count");
+    const timeElapsedEl = document.getElementById("time-elapsed");
+    const algorithmSteps = document.querySelectorAll('.steps-container li');
+    const speedSlider = document.getElementById("speed-slider");
+
+    let blocks = [];
+    let arrayData = []; // This will store the actual values
+    let arrayLength = 15;
+    let delay = 300;
+    let isSorting = false;
+    let comparisonCount = 0;
+    let mergeCount = 0;
+    let startTime = 0;
+
+    // Initialize the visualization
+    function generateArray() {
+      arrayContainer.innerHTML = "";
+      blocks = [];
+      arrayData = [];
+
+      for (let i = 0; i < arrayLength; i++) {
+        arrayData.push(Math.ceil(Math.random() * 100));
+      }
+
+      const maxWidth = arrayContainer.clientWidth;
+      const blockWidth = Math.min(28, (maxWidth - 40) / arrayLength - 2);
+      const blockSpacing = 2;
+
+      for (let i = 0; i < arrayLength; i++) {
+        const block = document.createElement("div");
+        block.className = "block";
+        block.style.height = `${arrayData[i] * 2.5}px`;
+        block.style.width = `${blockWidth}px`;
+        block.style.margin = `0 ${blockSpacing}px`;
+
+        const blockId = document.createElement("span");
+        blockId.className = "block-id";
+        blockId.innerText = arrayData[i];
+        block.appendChild(blockId);
+
+        arrayContainer.appendChild(block);
+        blocks.push(block);
+      }
+      
+      // Reset stats
+      comparisonCount = 0;
+      mergeCount = 0;
+      comparisonCountEl.textContent = "0";
+      mergeCountEl.textContent = "0";
+      timeElapsedEl.textContent = "0.00s";
+      resultDiv.textContent = "";
+      sortBtn.disabled = false;
+    }
+
+    // Update speed when slider changes
+    speedSlider.addEventListener('input', function() {
+      delay = 1050 - this.value; // Invert the value (so higher = faster)
+    });
+
+    function resetStepHighlights() {
+      algorithmSteps.forEach(step => {
+        step.classList.remove("active-step");
+      });
+    }
+
+    function highlightStep(stepNumber) {
+      resetStepHighlights();
+      const step = document.getElementById(`step${stepNumber}`);
+      if (step) step.classList.add("active-step");
+    }
+
+    async function startMergeSort() {
+      if (isSorting) return;
+      
+      resetStepHighlights();
+      highlightStep(1);
+      await sleep(delay/2);
+      
+      comparisonCount = 0;
+      mergeCount = 0;
+      comparisonCountEl.textContent = "0";
+      mergeCountEl.textContent = "0";
+      resultDiv.textContent = "";
+      startTime = performance.now();
+
+      isSorting = true;
+      sortBtn.disabled = true;
+      resetBtn.disabled = true;
+
+      // Create a copy of the array data to work with
+      const workingArray = [...arrayData];
+      
+      await mergeSort(workingArray, 0, workingArray.length - 1);
+      
+      const elapsed = (performance.now() - startTime) / 1000;
+      timeElapsedEl.textContent = elapsed.toFixed(4) + "s";
+      resultDiv.textContent = "Array sorted successfully!";
+      resultDiv.style.color = "#13CE66";
+      
+      // Update the main array data
+      arrayData = workingArray;
+      
+      isSorting = false;
+      sortBtn.disabled = false;
+      resetBtn.disabled = false;
+    }
+
+    async function mergeSort(arr, left, right) {
+      if (left < right) {
+        const middle = Math.floor((left + right) / 2);
+        
+        // Highlight current division
+        for (let i = left; i <= right; i++) {
+          if (i <= middle) {
+            blocks[i].classList.add("left-array");
+          } else {
+            blocks[i].classList.add("right-array");
+          }
+        }
+        highlightStep(1);
+        await sleep(delay);
+        
+        // Remove highlights
+        for (let i = left; i <= right; i++) {
+          blocks[i].classList.remove("left-array", "right-array");
+        }
+        
+        // Recursively sort both halves
+        highlightStep(2);
+        await mergeSort(arr, left, middle);
+        await mergeSort(arr, middle + 1, right);
+        
+        // Merge the sorted halves
+        highlightStep(3);
+        await merge(arr, left, middle, right);
+      }
+    }
+
+    async function merge(arr, left, middle, right) {
+      mergeCount++;
+      mergeCountEl.textContent = mergeCount;
+      
+      const n1 = middle - left + 1;
+      const n2 = right - middle;
+      
+      // Create temp arrays
+      const leftArray = new Array(n1);
+      const rightArray = new Array(n2);
+      
+      // Copy data to temp arrays
+      for (let i = 0; i < n1; i++) {
+        leftArray[i] = arr[left + i];
+      }
+      for (let j = 0; j < n2; j++) {
+        rightArray[j] = arr[middle + 1 + j];
+      }
+      
+      // Highlight the two halves being merged
+      for (let i = left; i <= middle; i++) {
+        blocks[i].classList.add("left-array");
+      }
+      for (let i = middle + 1; i <= right; i++) {
+        blocks[i].classList.add("right-array");
+      }
+      await sleep(delay);
+      
+      let i = 0, j = 0, k = left;
+      
+      // Merge the temp arrays back into arr[left..right]
+      while (i < n1 && j < n2) {
+        highlightStep(4);
+        // Highlight the elements being compared
+        blocks[left + i].classList.add("comparing");
+        blocks[middle + 1 + j].classList.add("comparing");
+        await sleep(delay);
+        
+        comparisonCount++;
+        comparisonCountEl.textContent = comparisonCount;
+        
+        if (leftArray[i] <= rightArray[j]) {
+          highlightStep(5);
+          arr[k] = leftArray[i];
+          updateBlock(k, arr[k]);
+          blocks[k].classList.add("merging");
+          await sleep(delay);
+          blocks[k].classList.remove("merging");
+          i++;
+        } else {
+          highlightStep(5);
+          arr[k] = rightArray[j];
+          updateBlock(k, arr[k]);
+          blocks[k].classList.add("merging");
+          await sleep(delay);
+          blocks[k].classList.remove("merging");
+          j++;
+        }
+        
+        // Remove comparison highlights
+        if (left + i <= middle) blocks[left + i].classList.remove("comparing");
+        if (middle + 1 + j <= right) blocks[middle + 1 + j].classList.remove("comparing");
+        
+        k++;
+      }
+      
+      // Copy remaining elements of leftArray if any
+      while (i < n1) {
+        highlightStep(6);
+        arr[k] = leftArray[i];
+        updateBlock(k, arr[k]);
+        blocks[k].classList.add("merging");
+        await sleep(delay);
+        blocks[k].classList.remove("merging");
+        i++;
+        k++;
+      }
+      
+      // Copy remaining elements of rightArray if any
+      while (j < n2) {
+        highlightStep(6);
+        arr[k] = rightArray[j];
+        updateBlock(k, arr[k]);
+        blocks[k].classList.add("merging");
+        await sleep(delay);
+        blocks[k].classList.remove("merging");
+        j++;
+        k++;
+      }
+      
+      // Mark the merged section as sorted
+      for (let i = left; i <= right; i++) {
+        blocks[i].classList.remove("left-array", "right-array");
+        blocks[i].classList.add("sorted");
+      }
+      await sleep(delay);
+      
+      // Remove sorted class (we'll add it back at the very end)
+      for (let i = left; i <= right; i++) {
+        blocks[i].classList.remove("sorted");
+      }
+    }
+
+    function updateBlock(index, value) {
+      blocks[index].style.height = `${value * 2.5}px`;
+      blocks[index].querySelector(".block-id").innerText = value;
+    }
+
+    function resetVisualization() {
+      if (isSorting) return;
+      generateArray();
+      
+      // Reset step highlights
+      resetStepHighlights();
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Initialize on load
+    window.addEventListener('load', generateArray);
+    window.addEventListener('resize', generateArray);
+  </script>
+</body>
+</html>

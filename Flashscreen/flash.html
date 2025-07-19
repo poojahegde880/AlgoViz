@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoViz - Algorithm Visualization</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="flash.css">
+</head>
+
+<body>
+  <!-- Navbar with Improved Logo -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <div class="logo-container">
+          <!-- <img src="" alt="AlgoViz Logo" class="logo-img"> -->
+          <!-- <img<a href="https://www.flaticon.com/free-icons/workflow" title="workflow icons"></a>> -->
+          <span class="logo-text">AlgoViz</span>
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-primary ms-2" href="http://127.0.0.1:55639/login.html">Get Started</a>
+          </li>
+             <li class="nav-item">
+  <a class="nav-link" href="http://127.0.0.1:55639/dashboard/adminlog.html" title="Admin">
+    <i class="ri-shield-user-fill"></i>
+  </a>
+</li>
+        </ul>
+      </div>
+    </div>
+
+
+
+
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div id="particles-js"></div>
+    <div class="hero-content fade-in">
+      <h1 class="mb-4">Visualize Algorithms Like Never Before</h1>
+      <p class="mb-4 delay-1">Explore the world of algorithms through interactive visualizations and step-by-step animations.</p>
+      <a href="http://127.0.0.1:55639/login.html" class="btn btn-primary btn-lg delay-2">Start Visualizing</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>About AlgoViz</h2>
+      </div>
+      <div class="about-content">
+        <div class="about-text fade-in delay-1">
+          <p>Algorithms are central to every non-trivial computer application, but their analysis and design can be challenging. Beyond mathematical and empirical analysis, Algorithm Visualization provides a powerful third way to understand how algorithms work.</p>
+          <p>AlgoViz illustrates algorithm behavior through graphical representations, showing step-by-step processes with animated visualizations. Our platform compares algorithms based on their space and time complexity, helping you develop a deeper intuition for algorithmic concepts.</p>
+          <p>Whether you're a student learning algorithms for the first time or a professional looking to refresh your knowledge, AlgoViz makes the learning process engaging and intuitive.</p>
+        </div>
+      </div>
+      
+      <div class="visualizations">
+        <div class="fade-in delay-2">
+          <div id="bars-container"></div>
+        </div>
+        <div class="fade-in delay-3">
+          <div class="cube-loader">
+            <div class="cube-top"></div>
+            <div class="cube-wrapper">
+              <span style="--i:0" class="cube-span"></span>
+              <span style="--i:1" class="cube-span"></span>
+              <span style="--i:2" class="cube-span"></span>
+              <span style="--i:3" class="cube-span"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compact Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-title fade-in">
+        <h2>Contact Us</h2>
+      </div>
+      <div class="contact-container">
+        <div class="contact-form fade-in delay-2">
+          <form action="https://formsubmit.co/poojahegde880@gmail.com" method="POST">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Your Full Name" pattern="[a-zA-Z ]+" title="Please enter only letters" name="name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="Your Email Address" name="email" required>
+            </div>
+            <div class="form-group">
+              <input type="tel" class="form-control" placeholder="Your Phone Number" pattern="[0-9]{10}" title="Please enter a 10-digit number" name="phone" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Subject" name="subject" required>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" placeholder="Your Message Here..." name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="#"><i class="ri-facebook-fill"></i></a>
+        <a href="#"><i class="ri-twitter-fill"></i></a>
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-linkedin-fill"></i></a>
+        <a href="#"><i class="ri-github-fill"></i></a>
+      </div>
+      <p>&copy; 2025 AlgoViz. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="flash.js"></script>
+</body>
+</html>

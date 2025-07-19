@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Sort Visualizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a00e0;
+            --secondary-color: #8e2de2;
+            --accent-color: #6a11cb;
+            --dark-bg: #0a0a0a;
+            --light-text: #f8f9fa;
+            --card-bg: #1a1a1a;
+            --highlight-sort: #2196f3;
+            --highlight-compare: #ff5722;
+            --highlight-sorted: #4caf50;
+            --highlight-bucket: #6b5b95;
+            --highlight-active: #ffeb3b;
+        }
+
+        body {
+            font-family: 'Baloo Tamma 2', cursive;
+            font-weight: 500;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .header-section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        /* Main Caption Styles */
+        .main-caption {
+            text-align: center;
+            margin: 0 auto 2rem;
+            padding: 1rem;
+            max-width: 800px;
+            background: linear-gradient(135deg, rgba(74, 0, 224, 0.1), rgba(106, 17, 203, 0.2));
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .main-caption h2 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-caption p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(106, 17, 203, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--secondary-color);
+            min-width: 200px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-top: 0.3rem;
+        }
+
+        /* Algorithm Explanation */
+        .algorithm-caption {
+            background: rgba(30, 30, 48, 0.7);
+            margin: 1.5rem auto;
+            padding: 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .algorithm-caption h3 {
+            color: var(--highlight-sort);
+            margin-top: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .algorithm-caption ol {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .algorithm-caption li {
+            margin-bottom: 0.5rem;
+        }
+
+        .complexity-note {
+            background: rgba(106, 17, 203, 0.15);
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        #array-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 300px;
+            margin: 1rem auto;
+            padding: 1rem;
+            max-width: 1200px;
+            background-color: rgba(30, 30, 48, 0.5);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .bucket-container {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 1rem auto;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .bucket {
+            width: 250px;
+            height: 300px;
+            background-color: rgba(30, 30, 48, 0.5);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .bucket.active {
+            box-shadow: 0 0 0 3px var(--highlight-active);
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .bucket-array {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 250px;
+            margin-bottom: 0.5rem;
+        }
+
+        .bucket-label {
+            text-align: center;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .block {
+            width: 28px;
+            background-color: var(--secondary-color);
+            position: relative;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .block.compared {
+            background-color: var(--highlight-compare) !important;
+        }
+
+        .block.sorted {
+            background-color: var(--highlight-sorted) !important;
+        }
+
+        .block.in-bucket {
+            background-color: var(--highlight-bucket) !important;
+        }
+
+        .block.highlight {
+            background-color: var(--highlight-sort) !important;
+        }
+
+        .block-id {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--light-text);
+        }
+
+        /* Legend Section */
+        .legend-section {
+            background: rgba(30, 30, 48, 0.7);
+            margin: 1.5rem auto;
+            padding: 1rem;
+            border-radius: 12px;
+            max-width: 800px;
+        }
+
+        .legend-title {
+            color: var(--highlight-sort);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .compare-dot { background-color: var(--highlight-compare); }
+        .sort-dot { background-color: var(--highlight-sort); }
+        .bucket-dot { background-color: var(--highlight-bucket); }
+        .sorted-dot { background-color: var(--highlight-sorted); }
+        .active-dot { background-color: var(--highlight-active); }
+
+        .hint {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Controls Section */
+        .controls-caption {
+            background: rgba(30, 30, 48, 0.7);
+            margin: 1.5rem auto 0;
+            padding: 1rem;
+            border-radius: 12px 12px 0 0;
+            max-width: 800px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .controls-caption h3 {
+            color: var(--highlight-sorted);
+            font-size: 1.3rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .pro-tip {
+            background: rgba(106, 17, 203, 0.15);
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 0 auto 2rem;
+            padding: 1.5rem;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            align-items: center;
+            background-color: rgba(30, 30, 48, 0.5);
+            border-radius: 0 0 12px 12px;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        #randomize-array-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        #sort-btn {
+            background: linear-gradient(135deg, #00c853, #64dd17);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 221, 23, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            transform: none !important;
+            box-shadow: none !important;
+            cursor: not-allowed;
+        }
+
+        .speed-slider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(106, 17, 203, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+        }
+
+        .speed-slider label {
+            white-space: nowrap;
+        }
+
+        input[type="range"] {
+            width: 150px;
+            -webkit-appearance: none;
+            height: 5px;
+            background: var(--card-bg);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .speed-slider {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            #array-container {
+                height: 250px;
+            }
+            
+            .bucket {
+                width: 100%;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+
+            .legend-items, .control-items {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <h1>Bucket Sort Visualizer</h1>
+            <p>Bucket sort is a sorting algorithm that works by distributing the elements of an array into several buckets. Each bucket is then sorted individually, either using a different sorting algorithm or by recursively applying the bucket sorting algorithm.</p>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div><i class="fas fa-clock"></i> Time Complexity (Best)</div>
+                    <div class="stat-value">O(n+k)</div>
+                </div>
+                <div class="stat-box">
+                    <div><i class="fas fa-clock"></i> Time Complexity (Average)</div>
+                    <div class="stat-value">O(n)</div>
+                </div>
+                <div class="stat-box">
+                    <div><i class="fas fa-memory"></i> Space Complexity</div>
+                    <div class="stat-value">O(n+k)</div>
+                </div>
+                <div class="stat-box">
+                    <div><i class="fas fa-exchange-alt"></i> Comparisons</div>
+                    <div id="comparison-count" class="stat-value">0</div>
+                </div>
+                <div class="stat-box">
+                    <div><i class="fas fa-stopwatch"></i> Time Elapsed</div>
+                    <div id="time-elapsed" class="stat-value">0.00s</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="algorithm-caption">
+        <h3><i class="fas fa-sitemap"></i> How Bucket Sort Works:</h3>
+        <ol>
+            <li><strong>Scatter Phase:</strong> Distribute elements into buckets based on their value ranges</li>
+            <li><strong>Sort Phase:</strong> Each bucket is sorted individually (using Insertion Sort here)</li>
+            <li><strong>Gather Phase:</strong> Concatenate all sorted buckets to get the final sorted array</li>
+        </ol>
+        <p class="complexity-note">
+            <i class="fas fa-bolt"></i> <strong>Best for:</strong> Uniformly distributed data • O(n+k) average time complexity
+        </p>
+    </div>
+
+    <div id="array-container"></div>
+
+    <div class="bucket-container">
+        <div class="bucket"><div id="bucket-1" class="bucket-array"></div><div class="bucket-label">[1-5]</div></div>
+        <div class="bucket"><div id="bucket-2" class="bucket-array"></div><div class="bucket-label">[6-10]</div></div>
+        <div class="bucket"><div id="bucket-3" class="bucket-array"></div><div class="bucket-label">[11-15]</div></div>
+        <div class="bucket"><div id="bucket-4" class="bucket-array"></div><div class="bucket-label">[16-20]</div></div>
+    </div>
+
+
+
+
+    <div class="controls">
+        <button id="randomize-array-btn"><i class="fas fa-random"></i> Randomize</button>
+        <div class="speed-slider">
+            <label for="speed-slider"><i class="fas fa-tachometer-alt"></i> Speed:</label>
+            <input type="range" id="speed-slider" min="1" max="100" value="50">
+        </div>
+        <button id="sort-btn"><i class="fas fa-play"></i> Sort</button>
+    </div>
+
+    <script>
+        const arrayContainer = document.getElementById("array-container");
+        const randomizeArrayBtn = document.getElementById("randomize-array-btn");
+        const sortBtn = document.getElementById("sort-btn");
+        const speedSlider = document.getElementById("speed-slider");
+        const comparisonCountEl = document.getElementById("comparison-count");
+        const timeElapsedEl = document.getElementById("time-elapsed");
+
+        const buckets = [
+            document.getElementById("bucket-1"),
+            document.getElementById("bucket-2"),
+            document.getElementById("bucket-3"),
+            document.getElementById("bucket-4")
+        ];
+
+        // Global variables
+        let blocks = [];
+        let arrayLength = 20;
+        let delay = calculateDelay(speedSlider.value);
+        let isSorting = false;
+        let comparisonCount = 0;
+        let startTime = 0;
+        let animationFrameId = null;
+        let originalArray = [];
+
+        // Generates a random array with values between 1-20
+        function generateRandomArray(length) {
+            return Array.from({ length }, () => Math.floor(Math.random() * 20) + 1);
+        }
+
+        // Creates the blocks in the DOM based on the provided array
+        function createBlocks(array, container) {
+            container.innerHTML = "";
+            const newBlocks = [];
+            
+            for (let i = 0; i < array.length; i++) {
+                const block = document.createElement("div");
+                block.className = "block";
+                block.style.height = `${array[i] * 10}px`;
+                
+                const blockId = document.createElement("span");
+                blockId.className = "block-id";
+                blockId.innerText = array[i].toString();
+                block.appendChild(blockId);
+                
+                // Add hover effect
+                block.addEventListener("mouseenter", () => {
+                    blockId.style.fontWeight = "bold";
+                    blockId.style.fontSize = "14px";
+                });
+                block.addEventListener("mouseleave", () => {
+                    blockId.style.fontWeight = "";
+                    blockId.style.fontSize = "";
+                });
+                
+                container.appendChild(block);
+                newBlocks.push(block);
+            }
+            
+            return newBlocks;
+        }
+
+        // Clear all buckets
+        function clearBuckets() {
+            buckets.forEach(bucket => {
+                bucket.innerHTML = "";
+                bucket.parentElement.classList.remove("active");
+            });
+        }
+
+        // Update time display continuously during sorting
+        function updateTimer() {
+            if (!isSorting) return;
+            
+            const elapsed = (performance.now() - startTime) / 1000;
+            timeElapsedEl.textContent = elapsed.toFixed(2) + "s";
+            animationFrameId = requestAnimationFrame(updateTimer);
+        }
+
+        // Highlight a block
+        async function highlightBlock(block, className) {
+            block.classList.add(className);
+            await sleep(delay/2);
+            block.classList.remove(className);
+        }
+
+        // Insertion sort for buckets
+        async function insertionSort(bucketBlocks, bucketIndex) {
+            // Highlight the active bucket
+            buckets[bucketIndex].parentElement.classList.add("active");
+            
+            for (let i = 1; i < bucketBlocks.length; i++) {
+                bucketBlocks[i].classList.add("compared");
+                await sleep(delay/2);
+                
+                let j = i - 1;
+                const currentValue = parseInt(bucketBlocks[i].querySelector(".block-id").innerText);
+                const currentHeight = bucketBlocks[i].style.height;
+                
+                while (j >= 0 && parseInt(bucketBlocks[j].querySelector(".block-id").innerText) > currentValue) {
+                    comparisonCount++;
+                    comparisonCountEl.textContent = comparisonCount;
+                    
+                    bucketBlocks[j].classList.add("compared");
+                    await sleep(delay/2);
+                    
+                    // Move the block
+                    bucketBlocks[j + 1].style.height = bucketBlocks[j].style.height;
+                    bucketBlocks[j + 1].querySelector(".block-id").innerText = 
+                        bucketBlocks[j].querySelector(".block-id").innerText;
+                    
+                    bucketBlocks[j].classList.remove("compared");
+                    await sleep(delay/2);
+                    j--;
+                }
+                
+                bucketBlocks[j + 1].style.height = currentHeight;
+                bucketBlocks[j + 1].querySelector(".block-id").innerText = currentValue.toString();
+                bucketBlocks[j + 1].classList.add("sorted");
+                bucketBlocks[i].classList.remove("compared");
+                await sleep(delay);
+            }
+            
+            // Color all sorted blocks green
+            for (let i = 0; i < bucketBlocks.length; i++) {
+                bucketBlocks[i].classList.add("sorted");
+                await sleep(delay/3);
+            }
+            
+            // Remove active highlight
+            buckets[bucketIndex].parentElement.classList.remove("active");
+        }
+
+        // Main bucket sort function
+        async function bucketSort() {
+            if (isSorting) return;
+            
+            // Reset counters and timer
+            comparisonCount = 0;
+            comparisonCountEl.textContent = "0";
+            startTime = performance.now();
+            timeElapsedEl.textContent = "0.00s";
+            animationFrameId = requestAnimationFrame(updateTimer);
+            
+            isSorting = true;
+            sortBtn.disabled = true;
+            randomizeArrayBtn.disabled = true;
+            
+            clearBuckets();
+            
+            // Distribute elements into buckets
+            const bucketContents = [[], [], [], []];
+            const bucketBlocks = [[], [], [], []];
+            
+            for (let i = 0; i < blocks.length; i++) {
+                const value = parseInt(blocks[i].querySelector(".block-id").innerText);
+                let bucketIndex;
+                
+                if (value >= 1 && value <= 5) bucketIndex = 0;
+                else if (value >= 6 && value <= 10) bucketIndex = 1;
+                else if (value >= 11 && value <= 15) bucketIndex = 2;
+                else bucketIndex = 3;
+                
+                blocks[i].classList.add("compared");
+                await sleep(delay/2);
+                
+                // Create a new block for the bucket
+                const block = document.createElement("div");
+                block.className = "block in-bucket";
+                block.style.height = `${value * 10}px`;
+                
+                const blockId = document.createElement("span");
+                blockId.className = "block-id";
+                blockId.innerText = value.toString();
+                block.appendChild(blockId);
+                
+                // Position the block in the bucket
+                block.style.transform = `translate(${bucketContents[bucketIndex].length * 30}px, 0)`;
+                buckets[bucketIndex].appendChild(block);
+                
+                bucketContents[bucketIndex].push(value);
+                bucketBlocks[bucketIndex].push(block);
+                
+                blocks[i].classList.remove("compared");
+                blocks[i].classList.add("in-bucket");
+                await sleep(delay/2);
+            }
+            
+            // Sort each bucket
+            for (let i = 0; i < 4; i++) {
+                if (bucketBlocks[i].length > 0) {
+                    await insertionSort(bucketBlocks[i], i);
+                }
+            }
+            
+            // Concatenate buckets back to the main array
+            let blockIndex = 0;
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < bucketBlocks[i].length; j++) {
+                    bucketBlocks[i][j].classList.add("compared");
+                    await sleep(delay/2);
+                    
+                    blocks[blockIndex].style.height = bucketBlocks[i][j].style.height;
+                    blocks[blockIndex].querySelector(".block-id").innerText = 
+                        bucketBlocks[i][j].querySelector(".block-id").innerText;
+                    blocks[blockIndex].classList.remove("in-bucket");
+                    blocks[blockIndex].classList.add("sorted");
+                    
+                    bucketBlocks[i][j].classList.remove("compared");
+                    await sleep(delay/2);
+                    blockIndex++;
+                }
+            }
+            
+            // Stop the timer
+            cancelAnimationFrame(animationFrameId);
+            const totalTime = (performance.now() - startTime) / 1000;
+            timeElapsedEl.textContent = totalTime.toFixed(2) + "s";
+            
+            isSorting = false;
+            sortBtn.disabled = false;
+            randomizeArrayBtn.disabled = false;
+        }
+
+        function calculateDelay(speed) {
+            return 2000 / speed;
+        }
+
+        // Utility function to add a delay
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function updateDelay() {
+            delay = calculateDelay(speedSlider.value);
+        }
+
+        // Event listeners
+        randomizeArrayBtn.addEventListener("click", () => {
+            if (!isSorting) {
+                const newArray = generateRandomArray(arrayLength);
+                originalArray = newArray;
+                blocks = createBlocks(newArray, arrayContainer);
+                comparisonCount = 0;
+                comparisonCountEl.textContent = "0";
+                timeElapsedEl.textContent = "0.00s";
+                clearBuckets();
+            }
+        });
+
+        sortBtn.addEventListener("click", bucketSort);
+        speedSlider.addEventListener("input", updateDelay);
+
+        // Initial setup
+        window.addEventListener('load', () => {
+            const initialArray = generateRandomArray(arrayLength);
+            originalArray = initialArray;
+            blocks = createBlocks(initialArray, arrayContainer);
+        });
+    </script>
+</body>
+</html>

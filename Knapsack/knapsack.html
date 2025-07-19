@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractional Knapsack Visualizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="knapsack.css">
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <h1>Fractional Knapsack Visualizer</h1>
+            <p>The fractional knapsack problem is an optimization problem that aims to maximize the total value of items in a knapsack without exceeding its weight capacity, allowing fractions of items to be taken.</p>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div><i class="fas fa-clock"></i> Time Complexity</div>
+                    <div class="stat-value">O(n log n)</div>
+                </div>
+                <div class="stat-box">
+                    <div><i class="fas fa-memory"></i> Space Complexity</div>
+                    <div class="stat-value">O(n)</div>
+                </div>
+                <!-- <div class="stat-box">
+                    <div><i class="fas fa-exchange-alt"></i> Comparisons</div>
+                    <div id="comparison-count" class="stat-value">0</div>
+                </div> -->
+                <div class="stat-box">
+                    <div><i class="fas fa-stopwatch"></i> Time Elapsed</div>
+                    <div id="time-elapsed" class="stat-value">0.00s</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="input-section">
+            <h5 class="card-header">Input:</h5>
+            <div class="form-group mt-3">
+                <label for="capacity" class="control-label">Knapsack Capacity:</label>
+                <input required name='capacity' type="text" class="form-control" id="capacity" placeholder="Enter maximum weight capacity">
+            </div>
+            <div class="form-group mt-3" id="items">
+                <table id="item-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Value</th>
+                            <th>Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3">
+                <button class="btn" id="addbutton">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+                <button class="btn" id="gobutton">
+                    <i class="fas fa-calculator"></i> Calculate
+                </button>
+            </div>
+        </div>
+
+        <div class="output-section">
+            <h5 class="card-header">Solution:</h5>
+            <div class="knapsack-result">
+                <p>Optimal items in knapsack: <strong id="final_knapsack"></strong></p>
+                <p>Maximum achievable value: <strong id="final_profit"></strong></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="knapsack.js"></script>
+</body>
+</html>
