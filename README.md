@@ -1,12 +1,12 @@
-# AlgoViz 🧠💻
+# AlgoViz 
 
 AlgoViz is a web-based visualization tool designed to help users understand various algorithms through interactive simulations. It supports searching, sorting, and dynamic programming algorithms with a clean, responsive interface.
 
 ---
 
-## 📌 Features
+## Features
 
-- 🔍 Visualizations for:
+- Visualizations for:
   - Linear Search
   - Binary Search
   - Bubble Sort
@@ -15,14 +15,14 @@ AlgoViz is a web-based visualization tool designed to help users understand vari
   - Bucket Sort
   - Knapsack (0/1)
   - Sum of Subsets
-- 📊 Ratings & view counts for each algorithm
-- 👤 Login/Registration system (with admin dashboard)
-- ⚙️ Backend built with Node.js & Express
-- 🗃️ MySQL integration for persistent storage
+- Ratings & view counts for each algorithm
+- Login/Registration system (with admin dashboard)
+- Backend built with Node.js & Express
+- MySQL integration for persistent storage
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
 | Frontend         | Backend           | Database   |
 |------------------|-------------------|------------|
@@ -30,9 +30,9 @@ AlgoViz is a web-based visualization tool designed to help users understand vari
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-### 🔧 Requirements
+### Requirements
 - Node.js
 - MySQL
 - Git
