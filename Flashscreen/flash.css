@@ -57,8 +57,9 @@
     font-size: 1.5rem;
     font-weight: 700;
     background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
   }
   
   .logo-img:hover {
@@ -174,8 +175,9 @@
     font-size: 2.5rem;
     display: inline-block;
     background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
     position: relative;
   }
   
