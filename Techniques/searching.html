@@ -223,7 +223,7 @@
 </head>
 <body>
   <div class="header">
-  <div class="close-btn" onclick="window.location.href='http://127.0.0.1:59474/home/home.html'">
+  <div class="close-btn" onclick="window.location.href='/home/home.html'">
   <i class="fas fa-times"></i>
 </div>
 
@@ -273,55 +273,6 @@
   <div id="rating-toast" class="toast-message">Rating submitted!</div>
 
   <script>
-    
-
-    function submitRating(rating, algorithm) {
-      const user_id = localStorage.getItem("userId") || 1;
-
-      // Color stars immediately
-      updateStarUI(algorithm, rating);
-
-      fetch(`${apiUrl}/ratings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id, algorithm, rating })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          showToast("Rating submitted!");
-          loadRating(algorithm);
-        } else {
-          showToast("Failed to submit rating.");
-        }
-      })
-      .catch(err => {
-        console.error("Error submitting rating:", err);
-        showToast("Server error.");
-      });
-    }
-
-    function updateStarUI(algorithm, rating) {
-      const stars = document.querySelectorAll(`.stars[data-algorithm="${algorithm}"] .star`);
-      stars.forEach(star => {
-        const value = parseInt(star.getAttribute('data-value'));
-        star.classList.toggle('active', value <= rating);
-      });
-    }
-
-    function loadRating(algorithm) {
-      fetch(`${apiUrl}/ratings/${algorithm}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            const avgRating = data.averageRating;
-            const count = data.ratingCount;
-            document.getElementById(`${algorithm}-avg-rating`).textContent = avgRating || '0';
-            document.getElementById(`${algorithm}-rating-count`).textContent = count || '0';
-          }
-        })
-        .catch(err => console.error("Error loading ratings:", err));
-    }
 
     
 
