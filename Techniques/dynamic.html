@@ -261,37 +261,7 @@
     
   const user_id = localStorage.getItem("userId") || 1;
 
-  function submitRating(rating, algorithm) {
-    fetch('http://localhost:5500/ratings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id, algorithm, rating })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          highlightUserRating(algorithm, rating);
-          showToast("Rating submitted!");
-        } else {
-          showToast("Failed to submit rating.");
-        }
-      })
-      .catch(err => {
-        console.error("Error submitting rating:", err);
-        showToast("Server error.");
-      });
-  }
 
-  function loadRating(algorithm) {
-    fetch(`http://localhost:5500/ratings/${algorithm}?user_id=${user_id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.userRating) {
-          highlightUserRating(algorithm, data.userRating);
-        }
-      })
-      .catch(err => console.error("Error loading rating:", err));
-  }
 
   function highlightUserRating(algorithm, rating) {
     const stars = document.querySelectorAll(`.stars[data-algo="${algorithm}"] .star`);
@@ -299,20 +269,6 @@
       const starValue = parseInt(star.getAttribute("data-value"));
       star.classList.toggle("active", starValue <= rating);
     });
-  }
-
-  function updateViewCount(algorithmName) {
-    fetch(`http://localhost:5500/views/${algorithmName}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          console.log(`${algorithmName} view count updated:`, data.viewCount);
-        }
-      })
-      .catch(err => console.error('Error updating view count:', err));
   }
 
   function showToast(message) {
