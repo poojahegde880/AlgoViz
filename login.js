@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 localStorage.setItem('userId', data.userId);
                 alert(data.message);
-                window.location.href = "/home/home.html";
+                window.location.href = "/Flashscreen/flash.html";
             }
         } catch (err) {
             console.error('Error during login:', err);
