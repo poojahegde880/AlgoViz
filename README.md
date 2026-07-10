@@ -1,80 +1,172 @@
-# 🚀 AlgoViz
+# 📘 AlgoViz
 
-An interactive web-based Algorithm Visualizer designed to help students understand fundamental algorithms through engaging visualizations.
+An interactive **Algorithm Visualizer** designed to help students and beginners understand Data Structures and Algorithms through real-time animations. The application demonstrates how algorithms execute step by step, making learning more engaging and intuitive.
 
-## 🌐 Live Demo
+---
 
-🔗 https://poojahegde880.github.io/AlgoViz/
+# 🌐 Live Demo
 
-## 📌 Features
+https://poojahegde880.github.io/AlgoViz/
 
-- 🔍 Searching Algorithms
-  - Linear Search
-  - Binary Search
+---
 
-- 🔄 Sorting Algorithms
-  - Bubble Sort
-  - Selection Sort
-  - Merge Sort
-  - Bucket Sort
+# ✨ Features
 
-- 🧠 Dynamic Programming
-  - 0/1 Knapsack
-  - Sum of Subsets
+- 🎥 Interactive algorithm animations
+- 📊 Step-by-step execution visualization
+- ⚡ Adjustable animation speed
+- 🔄 Reset and replay functionality
+- 📱 Responsive user interface
+- 🎨 Clean and intuitive design
+- 🎓 Designed for DSA learning
 
-- 📖 Clean and intuitive user interface
-- 🎨 Responsive design
-- ⚡ Interactive algorithm visualization
+---
 
-## 🛠️ Technologies Used
+# 📚 Supported Algorithms
+
+## Searching
+
+- 🔍 Linear Search
+- 🔎 Binary Search
+
+## Sorting
+
+- Bubble Sort
+- Selection Sort
+- Merge Sort
+- Bucket Sort
+
+## Greedy Algorithm
+
+- Fractional Knapsack
+
+## Backtracking
+
+- Sum of Subsets
+
+---
+
+# 🛠 Tech Stack
 
 - HTML5
 - CSS3
 - JavaScript
 - Bootstrap
 
-## 📂 Project Structure
+---
 
+# 🏗 Project Architecture
+
+```text
+User Interaction
+        │
+        ▼
+Algorithm Selection
+        │
+        ▼
+Animation Engine
+        │
+        ▼
+Visualization
+        │
+        ▼
+Learning Output
 ```
-AlgoViz
-│── Flashscreen/
-│── home/
-│── Techniques/
-│── LinearSearch/
-│── BinarySearch/
-│── BubbleSort/
-│── SelectionSort/
-│── MergeSort/
-│── BucketSort/
-│── Knapsack/
-│── SumofSubsets/
-│── index.html
+
+---
+
+# 📂 Project Structure
+
+```text
+AlgoViz/
+│
+├── BubbleSort/
+├── LinearSearch/
+├── BinarySearch/
+├── MergeSort/
+├── BucketSort/
+├── SelectionSort/
+├── FractionalKnapsack/
+├── SumOfSubsets/
+│
+├── assets/
+├── css/
+├── js/
+└── README.md
 ```
 
-## 🚀 Getting Started
+---
 
-1. Clone the repository
+# 🚀 Installation
+
+Clone the repository
 
 ```bash
 git clone https://github.com/poojahegde880/AlgoViz.git
 ```
 
-2. Open `index.html` in your browser
+Open the project
 
-or
+```bash
+Open index.html
+```
 
-Visit the live demo.
-
-## 📷 Screenshots
-
-(Add screenshots here later.)
-
-## 👩‍💻 Author
-
-**Pooja Hegde**
-
-GitHub: https://github.com/poojahegde880
+Or use a Live Server extension in VS Code.
 
 ---
 
-⭐ If you found this project useful, consider giving it a star!
+# 📸 Screenshots
+
+> Screenshots will be added soon.
+
+Suggested screenshots:
+
+- 🏠 Home
+- 🔍 Linear Search
+- 📊 Bubble Sort
+- 📈 Merge Sort
+- 🎯 Fractional Knapsack
+- 🌙 Responsive Layout
+
+---
+
+# 🎯 Learning Objectives
+
+- Understand algorithm execution visually
+- Learn searching and sorting techniques
+- Improve DSA concepts through animation
+- Explore Greedy and Backtracking algorithms
+
+---
+
+# 🚀 Future Improvements
+
+- More sorting algorithms
+- Graph algorithms
+- Tree visualizations
+- Dynamic Programming visualizations
+- Complexity comparison charts
+- Code execution panel
+- Theme customization
+
+---
+
+# 👩‍💻 Author
+
+**Pooja Hegde**
+
+- 💼 LinkedIn: https://www.linkedin.com/in/poojahegde14
+- 💻 GitHub: https://github.com/poojahegde880
+- 🌐 Portfolio: https://pooja-hegde-portfolio.netlify.app
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
